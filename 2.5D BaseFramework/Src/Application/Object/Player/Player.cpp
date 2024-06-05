@@ -9,13 +9,13 @@ void Player::Update()
 	//移動処理
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
-		m_pos.x -= 0.1f;
+		m_pos.x -= 0.15f;
 		m_scale.x = -2.0f;
 		m_dirType |= DirType::Move;
 	}
 	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		m_pos.x += 0.1f;
+		m_pos.x += 0.15f;
 		m_scale.x = 2.0f;
 		m_dirType |= DirType::Move;
 	}
@@ -40,7 +40,7 @@ void Player::Update()
 		if (!keyFlg &&jumpCount < maxJumpCount)
 		{
 			keyFlg = true;
-			m_gravity = -0.135f;
+			m_gravity = -0.2f;
 			jumpFlg = true;
 			jumpCount++;	
 		}
@@ -74,7 +74,7 @@ void Player::Update()
 
 	//重力をキャラに反映
 	m_pos.y -= m_gravity;
-	m_gravity += 0.005f;
+	m_gravity += 0.008f;
 
 	//アニメーション更新
 
@@ -259,7 +259,7 @@ void Player::DrawLit()
 
 void Player::WallKick(const Math::Vector3& hitDir)
 {
-	wallKickForce = 0.5f;
+	wallKickForce = 0.05f;
 
 	m_pos += hitDir * wallKickForce;
 	m_pos.y += wallKickForce; 
@@ -272,28 +272,6 @@ bool Player::IsKeyPressed(int key)
 
 void Player::ChangeAnimetion()
 {
-	/*switch (m_dirType)
-	{
-	case DirType::Idle:
-		m_animeInfo.start = 0;
-		m_animeInfo.end = 11;
-		break;
-	case DirType::Move:
-		m_animeInfo.start = 12;
-		m_animeInfo.end = 19;
-		break;
-	case DirType::Jump:
-		m_animeInfo.start = 24;
-		m_animeInfo.end = 27;
-		break;
-	case DirType::Attack:
-		m_animeInfo.start = 16;
-		m_animeInfo.end = 19;
-		break;
-	default:
-		break;
-	}*/
-
 	if (m_dirType & DirType::Idle)
 	{
 		m_animeInfo.start = 0;
@@ -317,5 +295,5 @@ void Player::ChangeAnimetion()
 
 	//カウントとスピードを初期化
 	m_animeInfo.count = 0;
-	m_animeInfo.speed = 0.2f;
+	m_animeInfo.speed = 0.3f;
 }
