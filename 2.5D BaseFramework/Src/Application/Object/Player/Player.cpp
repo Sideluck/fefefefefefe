@@ -3,34 +3,35 @@
 
 void Player::Update()
 {
-	m_dirType = 0; //ビット列をクリア
+	UINT oldDirType = m_dirType;   //前回の方向タイプを退避
+	m_dirType = 0;				   //ビット列をクリア
 
 	//移動処理
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
 		m_pos.x -= 0.1f;
 		m_scale.x = -2.0f;
-		m_dirType = DirType::Move;
+		m_dirType |= DirType::Move;
 	}
 	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
 		m_pos.x += 0.1f;
 		m_scale.x = 2.0f;
-		m_dirType = DirType::Move;
+		m_dirType |= DirType::Move;
 	}
 	else if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
 		m_pos.z += 0.1f;
-		m_dirType = DirType::Move;
+		m_dirType |= DirType::Move;
 	}
 	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
 		m_pos.z -= 0.1f;
-		m_dirType = DirType::Move;
+		m_dirType |= DirType::Move;
 	}
 	else
 	{
-		m_dirType = DirType::Idle;
+		m_dirType |= DirType::Idle;
 	}
 
 	//ジャンプ
@@ -51,10 +52,19 @@ void Player::Update()
 
 	if (jumpFlg)
 	{
-		m_dirType = DirType::Jump;
+		m_dirType |= DirType::Jump;
 	}
 
-	ChangeAnimetion();
+	//何かアクションをしたらアニメーション情報更新
+	if (m_dirType != 0 && m_dirType != oldDirType)
+	{
+		ChangeAnimetion();
+	}
+	//変わっていないなら元の向き(退避データ)に戻す
+	else
+	{
+		m_dirType = oldDirType;
+	}
 
 	if (m_pos.y < -20)
 	{
@@ -262,7 +272,7 @@ bool Player::IsKeyPressed(int key)
 
 void Player::ChangeAnimetion()
 {
-	switch (m_dirType)
+	/*switch (m_dirType)
 	{
 	case DirType::Idle:
 		m_animeInfo.start = 0;
@@ -282,5 +292,30 @@ void Player::ChangeAnimetion()
 		break;
 	default:
 		break;
+	}*/
+
+	if (m_dirType & DirType::Idle)
+	{
+		m_animeInfo.start = 0;
+		m_animeInfo.end = 11;
 	}
+	if (m_dirType & DirType::Move)
+	{
+		m_animeInfo.start = 12;
+		m_animeInfo.end = 19;
+	}
+	if (m_dirType & DirType::Jump)
+	{
+		m_animeInfo.start = 24;
+		m_animeInfo.end = 27;
+	}
+	if (m_dirType & DirType::Attack)
+	{
+		m_animeInfo.start = 16;
+		m_animeInfo.end = 19;
+	}
+
+	//カウントとスピードを初期化
+	m_animeInfo.count = 0;
+	m_animeInfo.speed = 0.2f;
 }
