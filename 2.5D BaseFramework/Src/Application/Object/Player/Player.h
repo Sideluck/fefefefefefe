@@ -60,4 +60,6 @@ private:
 	bool keyFlg = false;
 	int jumpCount = 0;			//ジャンプカウント
 	const int maxJumpCount = 2; //何回連続でジャンプできるかのカウント
+	int wallKickCount = 0;			//ジャンプカウント
+	const int maxWallKickCount = 1;
 };

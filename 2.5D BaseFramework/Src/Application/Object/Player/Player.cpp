@@ -50,9 +50,13 @@ void Player::Update()
 		keyFlg = false;
 	}
 
-	if (jumpFlg)
+	if (jumpFlg && wallKickCount < 1)
 	{
 		m_dirType |= DirType::Jump;
+	}
+	if (wallKickCount == 1)
+	{
+		m_dirType |= DirType::Attack;
 	}
 
 	//何かアクションをしたらアニメーション情報更新
@@ -156,7 +160,15 @@ void Player::PostUpdate()
 		m_pos = hitPos + Math::Vector3(0, -0.5f, 0);
 		m_gravity = 0;
 		jumpCount = 0;
+		wallKickCount = 0;
 		jumpFlg = false;
+	}
+	else
+	{
+		if (!jumpFlg && jumpCount < 1)
+		{
+			jumpCount += 1;
+		}
 	}
 
 	//☆☆☆
@@ -210,10 +222,10 @@ void Player::PostUpdate()
 		m_pos += hitDir * maxOverLap;
 
 		//壁キック
-		if (jumpFlg&& !keyFlg&&IsKeyPressed(VK_SPACE))
+		if (jumpFlg&& !keyFlg&&IsKeyPressed(VK_SPACE) && wallKickCount < maxWallKickCount)
 		{
-			//jumpCount = 1;
-			WallKick(hitDir);
+			jumpCount = 1;
+			wallKickCount++;
 		}
 	}
 }
@@ -221,7 +233,7 @@ void Player::PostUpdate()
 void Player::Init()
 {
 	m_polygon.SetMaterial("Asset/Textures/Ninja.png");
-	m_pos   = { 0,10,0 };
+	m_pos   = { -10,-1,0 };
 	m_scale = { 2,2,2 };
 
 	//画像分割
@@ -289,8 +301,8 @@ void Player::ChangeAnimetion()
 	}
 	if (m_dirType & DirType::Attack)
 	{
-		m_animeInfo.start = 16;
-		m_animeInfo.end = 19;
+		m_animeInfo.start = 38;
+		m_animeInfo.end = 41;
 	}
 
 	//カウントとスピードを初期化
