@@ -249,13 +249,13 @@
     <ClInclude Include="..\Library\imgui\ja_glyph_ranges.h">
       <Filter>Library\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Player\Player.h">
+    <ClInclude Include="Src\Application\Object\Player\Ninja.h">
       <Filter>Src\Application\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Stage\Stage.h">
+    <ClInclude Include="Src\Application\Object\Stage\City.h">
       <Filter>Src\Application\Object\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Background\Background.h">
+    <ClInclude Include="Src\Application\Object\Background\Sky.h">
       <Filter>Src\Application\Object\Background</Filter>
     </ClInclude>
   </ItemGroup>
@@ -398,13 +398,13 @@
     <ClCompile Include="..\Library\imgui\imgui_stdlib.cpp">
       <Filter>Library\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Player\Player.cpp">
+    <ClCompile Include="Src\Application\Object\Player\Ninja.cpp">
       <Filter>Src\Application\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Stage\Stage.cpp">
+    <ClCompile Include="Src\Application\Object\Stage\City.cpp">
       <Filter>Src\Application\Object\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Background\Background.cpp">
+    <ClCompile Include="Src\Application\Object\Background\Sky.cpp">
       <Filter>Src\Application\Object\Background</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,6 @@
-﻿#include "Background.h"
+﻿#include "Sky.h"
 
-void Background::Init()
+void Sky::Init()
 {
 	/*m_polygon.SetMaterial("Asset/Textures/BackGround.png");
 	m_scaleMat = Math::Matrix::CreateScale(300, 10, 1);
@@ -15,7 +15,7 @@ void Background::Init()
 
 }
 
-void Background::DrawUnLit()
+void Sky::DrawUnLit()
 {
 	//KdShaderManager::Instance().m_StandardShader.DrawPolygon(m_polygon, m_mWorld);
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);

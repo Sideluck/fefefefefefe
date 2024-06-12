@@ -1,6 +1,6 @@
-﻿#include "Stage.h"
+﻿#include "City.h"
 
-void Stage::Init()
+void City::Init()
 {
 	//データ読みこみ
 	m_model = std::make_shared<KdModelData>();
@@ -17,12 +17,12 @@ void Stage::Init()
 	m_pCollider->RegisterCollisionShape("StageCollison", m_model, KdCollider::TypeGround);
 }
 
-void Stage::GenerateDepthMapFromLight()
+void City::GenerateDepthMapFromLight()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 }
 
-void Stage::DrawLit()
+void City::DrawLit()
 {
 	//表示
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);

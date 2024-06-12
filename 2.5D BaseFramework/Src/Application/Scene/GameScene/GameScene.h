@@ -2,7 +2,7 @@
 
 #include"../BaseScene/BaseScene.h"
 
-class Player;
+class Ninja;
 
 class GameScene : public BaseScene
 {
@@ -16,5 +16,5 @@ private:
 	void Event() override;
 	void Init() override;
 
-	std::weak_ptr<Player> m_player;
+	std::weak_ptr<Ninja> m_player;
 };

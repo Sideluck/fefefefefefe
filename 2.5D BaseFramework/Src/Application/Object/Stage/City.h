@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-class Stage :public KdGameObject
+class City :public KdGameObject
 {
 public:
-	Stage() { Init(); }
-	~Stage() {}
+	City() { Init(); }
+	~City() {}
 
 	void Init()override;
 	void GenerateDepthMapFromLight()override;

@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-class Background :public KdGameObject
+class Sky :public KdGameObject
 {
 public:
-	Background() { Init(); }
-	~Background() {}
+	Sky() { Init(); }
+	~Sky() {}
 
 	void Init()override;
 	void DrawUnLit()override;

@@ -1,8 +1,8 @@
 ﻿#include "GameScene.h"
 #include"../SceneManager.h"
-#include"../../Object/Player/Player.h"
-#include"../../Object/Stage/Stage.h"
-#include"../../Object/Background/Background.h"
+#include"../../Object/Player/Ninja.h"
+#include"../../Object/Stage/City.h"
+#include"../../Object/Background/Sky.h"
 
 void GameScene::Event()
 {
@@ -46,18 +46,17 @@ void GameScene::Init()
 
 
 //プレイヤー
-	std::shared_ptr<Player> player;
-	player = std::make_shared<Player>();
-	m_objList.push_back(player);
-	m_player = player;
-
+	std::shared_ptr<Ninja> ninja;
+	ninja = std::make_shared<Ninja>();
+	m_objList.push_back(ninja);
+	m_player = ninja;
 //ステージ
-	std::shared_ptr<Stage> stage;
-	stage = std::make_shared<Stage>();
-	m_objList.push_back(stage);
+	std::shared_ptr<City> city;
+	city = std::make_shared<City>();
+	m_objList.push_back(city);
 //背景
-	std::shared_ptr<Background> background;
-	background = std::make_shared<Background>();
-	m_objList.push_back(background);
+	std::shared_ptr<Sky> sky;
+	sky = std::make_shared<Sky>();
+	m_objList.push_back(sky);
 
 }

@@ -1,7 +1,7 @@
-﻿#include "Player.h"
+﻿#include "Ninja.h"
 #include "../../Scene/SceneManager.h"
 
-void Player::Update()
+void Ninja::Update()
 {
 	UINT oldDirType = m_dirType;   //前回の方向タイプを退避
 	m_dirType = 0;				   //ビット列をクリア
@@ -100,7 +100,7 @@ void Player::Update()
 	m_mWorld = m_scaleMat * m_transMat;
 }
 
-void Player::PostUpdate()
+void Ninja::PostUpdate()
 {
 	//☆☆☆☆☆☆☆☆☆☆☆☆
 	//☆当たり判定(レイ判定)☆
@@ -232,7 +232,7 @@ void Player::PostUpdate()
 	}
 }
 
-void Player::Init()
+void Ninja::Init()
 {
 	m_polygon.SetMaterial("Asset/Textures/Ninja.png");
 	m_pos = { -10,-1,0 };
@@ -261,17 +261,17 @@ void Player::Init()
 
 }
 
-void Player::GenerateDepthMapFromLight()
+void Ninja::GenerateDepthMapFromLight()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(m_polygon, m_mWorld);
 }
 
-void Player::DrawLit()
+void Ninja::DrawLit()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(m_polygon, m_mWorld);
 }
 
-void Player::ChangeAnimetion()
+void Ninja::ChangeAnimetion()
 {
 	if (m_dirType & DirType::Idle)
 	{

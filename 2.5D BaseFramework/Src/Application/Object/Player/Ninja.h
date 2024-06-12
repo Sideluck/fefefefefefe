@@ -1,5 +1,5 @@
 ﻿#pragma once
-class Player :public KdGameObject
+class Ninja :public KdGameObject
 {
 public:
 
@@ -19,8 +19,8 @@ public:
 		float speed;	//アニメーションの速度
 	};
 
-	Player() { Init(); }
-	~Player() {}
+	Ninja() { Init(); }
+	~Ninja() {}
 
 	void Update()override;
 	void PostUpdate()override;
