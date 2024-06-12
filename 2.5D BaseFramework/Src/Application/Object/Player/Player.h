@@ -28,8 +28,6 @@ public:
 	void GenerateDepthMapFromLight()override;
 	void DrawLit()override;
 
-	bool IsKeyPressed(int key);
-
 private:
 
 	Math::Matrix m_scaleMat;

@@ -3,28 +3,39 @@
 
 void Player::Update()
 {
-	m_dirType = 0;	//ビット列をクリア
+	UINT oldDirType = m_dirType;   //前回の方向タイプを退避
+	m_dirType = 0;				   //ビット列をクリア
 
 	//移動処理
-	if (IsKeyPressed(VK_LEFT))
+	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
-		m_pos.x -= m_posPow;
-		m_scale.x = -1.5f;
-		m_dirType = DirType::Move;
+		m_pos.x -= 0.15f;
+		m_scale.x = -2.0f;
+		m_dirType |= DirType::Move;
 	}
-	else if (IsKeyPressed(VK_RIGHT))
+	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		m_pos.x += m_posPow;
-		m_scale.x = 1.5f;
-		m_dirType = DirType::Move;
+		m_pos.x += 0.15f;
+		m_scale.x = 2.0f;
+		m_dirType |= DirType::Move;
+	}
+	else if (GetAsyncKeyState(VK_UP) & 0x8000)
+	{
+		m_pos.z += 0.1f;
+		m_dirType |= DirType::Move;
+	}
+	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	{
+		m_pos.z -= 0.1f;
+		m_dirType |= DirType::Move;
 	}
 	else
 	{
-		m_dirType = DirType::Idle;
+		m_dirType |= DirType::Idle;
 	}
 
 	//ジャンプ
-	if (IsKeyPressed(VK_SPACE))
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
 		if (!keyFlg && jumpCount < maxJumpCount)
 		{
@@ -41,36 +52,23 @@ void Player::Update()
 
 	if (jumpFlg && wallKickCount < 1||airFlg)
 	{
-		m_dirType = DirType::Jump;
+		m_dirType |= DirType::Jump;
 	}
 	if (wallKickCount == 1)
 	{
-		m_dirType = DirType::Attack;
+		m_dirType |= DirType::Attack;
 	}
 
-
-	if (m_dirType = Idle)
+	//何かアクションをしたらアニメーション情報更新
+	if (m_dirType != 0 && m_dirType != oldDirType)
 	{
-		int Idle[4] = { 0,7,14,21 };
-		m_polygon.SetUVRect(Idle[(int)m_anim]);
-		m_anim += 0.1f;
-		if (m_anim >= 4)
-		{
-			m_anim = 0;
-		}
+		ChangeAnimetion();
 	}
-	else if (m_dirType = Move)
+	//変わっていないなら元の向き(退避データ)に戻す
+	else
 	{
-		int Move[4] = { 1,8,15,22 };
-		m_polygon.SetUVRect(Move[(int)m_anim]);
-		m_anim += 0.1f;
-		if (m_anim >= 4)
-		{
-			m_anim = 0;
-		}
+		m_dirType = oldDirType;
 	}
-
-	ChangeAnimetion();
 
 	if (m_pos.y < -20)
 	{
@@ -83,6 +81,7 @@ void Player::Update()
 	m_gravity += 0.008f;
 
 	//アニメーション更新
+
 	m_animeInfo.count += m_animeInfo.speed;
 	int animeCnt = m_animeInfo.count + m_animeInfo.start;
 
@@ -98,12 +97,14 @@ void Player::Update()
 	//座標更新
 	m_scaleMat = Math::Matrix::CreateScale(m_scale);
 	m_transMat = Math::Matrix::CreateTranslation(m_pos);
-	m_mWorld   = m_scaleMat * m_transMat;
+	m_mWorld = m_scaleMat * m_transMat;
 }
 
 void Player::PostUpdate()
 {
-	//当たり判定(レイ判定)
+	//☆☆☆☆☆☆☆☆☆☆☆☆
+	//☆当たり判定(レイ判定)☆
+	//☆☆☆☆☆☆☆☆☆☆☆☆
 
 	//レイ判定用の変数を作成
 	KdCollider::RayInfo ray;
@@ -113,7 +114,7 @@ void Player::PostUpdate()
 	ray.m_dir = Math::Vector3::Down;//真下
 
 	//少し高いところから飛ばす
-	ray.m_pos.y += 0.3f;
+	ray.m_pos.y += 0.5f;
 
 	//段差の許容範囲を設定
 	float enableStepHigh = 0.2f;
@@ -128,7 +129,9 @@ void Player::PostUpdate()
 	//レイに当たったオブジェクト情報を作成
 	std::list<KdCollider::CollisionResult> retRayList;
 
-	//レイと当たり判定
+	//☆☆☆☆☆☆☆☆☆
+	//レイと当たり判定☆
+	//☆☆☆☆☆☆☆☆☆
 	for (auto& obj : SceneManager::Instance().GetObjList())
 	{
 		obj->Intersects(ray, &retRayList);
@@ -154,7 +157,7 @@ void Player::PostUpdate()
 	if (ishit)
 	{
 		//当たっている
-		m_pos = hitPos + Math::Vector3(0, -0.3f, 0);
+		m_pos = hitPos + Math::Vector3(0, -0.5f, 0);
 		m_gravity = 0;
 		jumpCount = 0;
 		wallKickCount = 0;
@@ -170,12 +173,14 @@ void Player::PostUpdate()
 		}
 	}
 
+	//☆☆☆
 	//球判定
+	//☆☆☆
 
 	//球判定用の変数を作成
 	KdCollider::SphereInfo sphere;
 	//球の中心位置を設定
-	sphere.m_sphere.Center = m_pos + Math::Vector3(0, 0.7f, 0);
+	sphere.m_sphere.Center = m_pos + Math::Vector3(0, 0.9f, 0);
 	//球の半径を設定
 	sphere.m_sphere.Radius = 0.35f;
 	//当たり判定をしたいタイプを設定
@@ -186,8 +191,9 @@ void Player::PostUpdate()
 	//球が当たったオブジェクト情報を作成
 	std::list<KdCollider::CollisionResult> retSphereList;
 
-	//球と当たり判定
-
+	//☆☆☆☆☆☆☆☆☆
+	//球と当たり判定☆
+	//☆☆☆☆☆☆☆☆☆
 	for (auto& obj : SceneManager::Instance().GetObjList())
 	{
 		obj->Intersects(sphere, &retSphereList);
@@ -218,7 +224,7 @@ void Player::PostUpdate()
 		m_pos += hitDir * maxOverLap;
 
 		//壁キック
-		if (jumpFlg&& !keyFlg&&IsKeyPressed(VK_SPACE) && wallKickCount < maxWallKickCount)
+		if (jumpFlg && !keyFlg && GetAsyncKeyState(VK_SPACE) & 0x8000 && wallKickCount < maxWallKickCount)
 		{
 			jumpCount = 1;
 			wallKickCount++;
@@ -228,13 +234,12 @@ void Player::PostUpdate()
 
 void Player::Init()
 {
-	//m_polygon.SetMaterial("Asset/Textures/Ninja.png");
-	m_polygon.SetMaterial("Asset/Textures/ninja-black.png");
-	m_pos   = { -10,-1,0 };
-	m_scale = { 1.5,1.5,1.5 };
+	m_polygon.SetMaterial("Asset/Textures/Ninja.png");
+	m_pos = { -10,-1,0 };
+	m_scale = { 2,2,2 };
 
 	//画像分割
-	m_polygon.SetSplit(7, 4);
+	m_polygon.SetSplit(12, 6);
 
 	//原点変更
 	m_polygon.SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
@@ -243,14 +248,12 @@ void Player::Init()
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
 	m_animeInfo.start = 0;     //開始コマ
-	m_animeInfo.end   = 11;    //終了コマ
+	m_animeInfo.end = 12;    //終了コマ
 	m_animeInfo.count = 0;     //現在のコマ数カウント
-	m_animeInfo.speed = 0.3f;  //アニメーションの速度
+	m_animeInfo.speed = 0.2f;  //アニメーションの速度
 
 	//向いている方向
 	m_dirType = DirType::Idle;
-
-	m_posPow = 0.15;
 
 	jumpFlg = false;
 
@@ -268,14 +271,9 @@ void Player::DrawLit()
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(m_polygon, m_mWorld);
 }
 
-bool Player::IsKeyPressed(int key)
-{
-	return (GetAsyncKeyState(key) & 0x8000) != 0;
-}
-
 void Player::ChangeAnimetion()
 {
-	/*if (m_dirType & DirType::Idle)
+	if (m_dirType & DirType::Idle)
 	{
 		m_animeInfo.start = 0;
 		m_animeInfo.end = 11;
@@ -294,29 +292,9 @@ void Player::ChangeAnimetion()
 	{
 		m_animeInfo.start = 38;
 		m_animeInfo.end = 41;
-	}*/
-
-	switch (m_dirType)
-	{
-	case DirType::Idle:
-		m_animeInfo.start = 0;
-		m_animeInfo.end = 3;
-		break;
-	case DirType::Move:
-		m_animeInfo.start = 4;
-		m_animeInfo.end = 7;
-		break;
-	case DirType::Jump:
-		m_animeInfo.start = 7;
-		m_animeInfo.end = 8;
-		break;
-	case DirType::Attack:
-		m_animeInfo.start = 6;
-		m_animeInfo.end = 1;
-		break;
-	default:
-		break;
 	}
 
-	
+	//カウントとスピードを初期化
+	m_animeInfo.count = 0;
+	m_animeInfo.speed = 0.3f;
 }
