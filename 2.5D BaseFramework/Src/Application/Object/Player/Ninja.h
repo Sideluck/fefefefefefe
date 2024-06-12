@@ -5,18 +5,20 @@ public:
 
 	enum DirType
 	{
-		Idle   = 1 << 0,	//立ち姿
-		Move   = 1 << 1,	//移動
-		Jump   = 1 << 2,	//ジャンプ
-		Attack = 1 << 3,	//攻撃
+		Idle		= 1 << 0,	//立ち姿
+		Move		= 1 << 1,	//移動
+		Jump		= 1 << 2,	//ジャンプ
+		Attack		= 1 << 3,	//攻撃
+		WallMounted = 1 << 4,	//壁張り付き
 	};
 
 	struct AnimationInfo
 	{
-		int start;		//開始コマ
-		int end;		//終了コマ
-		float count;    //現在のコマ数カウント
-		float speed;	//アニメーションの速度
+		int start;			//開始コマ
+		int end;			//終了コマ
+		int nextStart;		//ループ後の開始コマ
+		float count;		//現在のコマ数カウント
+		float speed;		//アニメーションの速度
 	};
 
 	Ninja() { Init(); }
@@ -49,10 +51,13 @@ private:
 	AnimationInfo m_animeInfo;
 
 	//ジャンプしているかのフラグ
-	bool jumpFlg = false;
+	bool m_jumpFlg = false;
 
 	//空中にいるかのフラグ
-	bool airFlg = false;
+	bool m_airFlg = false;
+
+	//壁に張り付いているかのフラグ
+	bool m_wallMountedFlg = false;
 
 	//重力
 	float m_gravity = 0;
@@ -61,17 +66,17 @@ private:
 	float m_posPow = 0;
 
 	//キー制御するフラグ
-	bool keyFlg = false;		
+	bool m_keyFlg = false;		
 
 	//ジャンプカウント
-	int jumpCount = 0;			
+	int m_jumpCount = 0;			
 
 	//ジャンプの最大数
-	const int maxJumpCount = 2; 
+	const int m_maxJumpCount = 2; 
 
 	//壁ジャンプカウント
-	int wallKickCount = 0;			
+	int m_wallKickCount = 0;			
 
 	//壁ジャンプの最大数
-	const int maxWallKickCount = 1; 
+	const int m_maxWallKickCount = 1; 
 };

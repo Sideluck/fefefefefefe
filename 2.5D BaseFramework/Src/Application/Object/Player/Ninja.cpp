@@ -19,16 +19,6 @@ void Ninja::Update()
 		m_scale.x = 2.0f;
 		m_dirType |= DirType::Move;
 	}
-	else if (GetAsyncKeyState(VK_UP) & 0x8000)
-	{
-		m_pos.z += 0.1f;
-		m_dirType |= DirType::Move;
-	}
-	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-	{
-		m_pos.z -= 0.1f;
-		m_dirType |= DirType::Move;
-	}
 	else
 	{
 		m_dirType |= DirType::Idle;
@@ -37,26 +27,30 @@ void Ninja::Update()
 	//ジャンプ
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
-		if (!keyFlg && jumpCount < maxJumpCount)
+		if (!m_keyFlg && m_jumpCount < m_maxJumpCount)
 		{
-			keyFlg = true;
+			m_keyFlg = true;
 			m_gravity = -0.2f;
-			jumpFlg = true;
-			jumpCount++;
+			m_jumpFlg = true;
+			m_jumpCount++;
 		}
 	}
 	else
 	{
-		keyFlg = false;
+		m_keyFlg = false;
 	}
 
-	if (jumpFlg && wallKickCount < 1||airFlg)
+	if (m_jumpFlg && m_wallKickCount < 1||m_airFlg)
 	{
 		m_dirType |= DirType::Jump;
 	}
-	if (wallKickCount == 1)
+	if (m_wallKickCount == 1)
 	{
 		m_dirType |= DirType::Attack;
+	}
+	if (m_wallMountedFlg && m_jumpFlg)
+	{
+		m_dirType |= DirType::WallMounted;
 	}
 
 	//何かアクションをしたらアニメーション情報更新
@@ -89,7 +83,7 @@ void Ninja::Update()
 	if (animeCnt > m_animeInfo.end)
 	{
 		animeCnt = m_animeInfo.start;
-		m_animeInfo.count = 0;
+		m_animeInfo.count = m_animeInfo.nextStart;
 	}
 
 	m_polygon.SetUVRect(animeCnt);
@@ -159,17 +153,17 @@ void Ninja::PostUpdate()
 		//当たっている
 		m_pos = hitPos + Math::Vector3(0, -0.5f, 0);
 		m_gravity = 0;
-		jumpCount = 0;
-		wallKickCount = 0;
-		jumpFlg = false;
-		airFlg = false;
+		m_jumpCount = 0;
+		m_wallKickCount = 0;
+		m_jumpFlg = false;
+		m_airFlg = false;
 	}
 	else
 	{
-		airFlg = true;
-		if (!jumpFlg && jumpCount < 1)
+		m_airFlg = true;
+		if (!m_jumpFlg && m_jumpCount < 1)
 		{
-			jumpCount += 1;
+			m_jumpCount += 1;
 		}
 	}
 
@@ -224,11 +218,30 @@ void Ninja::PostUpdate()
 		m_pos += hitDir * maxOverLap;
 
 		//壁キック
-		if (jumpFlg && !keyFlg && GetAsyncKeyState(VK_SPACE) & 0x8000 && wallKickCount < maxWallKickCount)
+		if (m_jumpFlg && !m_keyFlg && m_wallKickCount < m_maxWallKickCount)
 		{
-			jumpCount = 1;
-			wallKickCount++;
+			m_gravity = 0.00f;
+			if (GetAsyncKeyState(VK_UP) & 0x8000)
+			{
+				m_pos.y += 0.01f;
+				m_wallMountedFlg = true;
+			}
+			else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+			{
+				m_pos.y -= 0.01f;
+				m_wallMountedFlg = true;
+			}
+
+			if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+			{
+				m_jumpCount = 1;
+				m_wallKickCount++;
+			}
 		}
+	}
+	else
+	{
+		m_wallMountedFlg = false;
 	}
 }
 
@@ -239,7 +252,7 @@ void Ninja::Init()
 	m_scale = { 2,2,2 };
 
 	//画像分割
-	m_polygon.SetSplit(12, 6);
+	m_polygon.SetSplit(8, 4);
 
 	//原点変更
 	m_polygon.SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
@@ -247,17 +260,18 @@ void Ninja::Init()
 	//デバッグ用
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
-	m_animeInfo.start = 0;     //開始コマ
-	m_animeInfo.end = 12;    //終了コマ
-	m_animeInfo.count = 0;     //現在のコマ数カウント
-	m_animeInfo.speed = 0.2f;  //アニメーションの速度
+	m_animeInfo.start     = 0;	   //開始コマ
+	m_animeInfo.nextStart = 0;     //ループ後の開始コマ
+	m_animeInfo.end       = 3;	   //終了コマ
+	m_animeInfo.count     = 0;     //現在のコマ数カウント
+	m_animeInfo.speed     = 0.15f; //アニメーションの速度
 
 	//向いている方向
 	m_dirType = DirType::Idle;
 
-	jumpFlg = false;
+	m_jumpFlg = false;
 
-	keyFlg = false;
+	m_keyFlg = false;
 
 }
 
@@ -276,25 +290,41 @@ void Ninja::ChangeAnimetion()
 	if (m_dirType & DirType::Idle)
 	{
 		m_animeInfo.start = 0;
-		m_animeInfo.end = 11;
+		m_animeInfo.end = 3;
+		m_animeInfo.nextStart = 0;
+		m_animeInfo.count = 0;
+		m_animeInfo.speed = 0.1f;
 	}
 	if (m_dirType & DirType::Move)
 	{
-		m_animeInfo.start = 12;
-		m_animeInfo.end = 19;
+		m_animeInfo.start = 8;
+		m_animeInfo.end = 11;
+		m_animeInfo.nextStart = 0;
+		m_animeInfo.count = 0;
+		m_animeInfo.speed = 0.15f;
 	}
 	if (m_dirType & DirType::Jump)
 	{
-		m_animeInfo.start = 24;
-		m_animeInfo.end = 27;
+		m_animeInfo.start = 16;
+		m_animeInfo.end = 17;
+		m_animeInfo.nextStart = 0;
+		m_animeInfo.count = 0;
+		m_animeInfo.speed = 0.0f;
 	}
 	if (m_dirType & DirType::Attack)
 	{
-		m_animeInfo.start = 38;
-		m_animeInfo.end = 41;
+		m_animeInfo.start = 24;
+		m_animeInfo.end = 27;
+		m_animeInfo.nextStart = 0;
+		m_animeInfo.count = 0;
+		m_animeInfo.speed = 0.15f;
 	}
-
-	//カウントとスピードを初期化
-	m_animeInfo.count = 0;
-	m_animeInfo.speed = 0.3f;
+	if (m_dirType & DirType::WallMounted)
+	{
+		m_animeInfo.start = 12;
+		m_animeInfo.end = 15;
+		m_animeInfo.nextStart = 0;
+		m_animeInfo.count = 0;
+		m_animeInfo.speed = 0.15f;
+	}
 }
