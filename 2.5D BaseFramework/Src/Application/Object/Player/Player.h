@@ -28,7 +28,6 @@ public:
 	void GenerateDepthMapFromLight()override;
 	void DrawLit()override;
 
-	void WallKick(const Math::Vector3& hitDir);
 	bool IsKeyPressed(int key);
 
 private:
@@ -41,8 +40,8 @@ private:
 	Math::Vector3 m_pos;
 	Math::Vector3 m_scale;
 
-	Math::Vector3 m_velocity;
-	float wallKickForce = 0;
+	//アニメーション
+	float m_anim = 0;
 
 	void ChangeAnimetion();
 
@@ -54,12 +53,27 @@ private:
 	//ジャンプしているかのフラグ
 	bool jumpFlg = false;
 
+	//空中にいるかのフラグ
+	bool airFlg = false;
+
 	//重力
 	float m_gravity = 0;
 
-	bool keyFlg = false;
-	int jumpCount = 0;			//ジャンプカウント
-	const int maxJumpCount = 2; //何回連続でジャンプできるかのカウント
-	int wallKickCount = 0;			//ジャンプカウント
-	const int maxWallKickCount = 1;
+	//移動量
+	float m_posPow = 0;
+
+	//キー制御するフラグ
+	bool keyFlg = false;		
+
+	//ジャンプカウント
+	int jumpCount = 0;			
+
+	//ジャンプの最大数
+	const int maxJumpCount = 2; 
+
+	//壁ジャンプカウント
+	int wallKickCount = 0;			
+
+	//壁ジャンプの最大数
+	const int maxWallKickCount = 1; 
 };

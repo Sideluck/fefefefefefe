@@ -79,6 +79,9 @@
     <Filter Include="Src\Application\Object\Stage">
       <UniqueIdentifier>{a87b46cc-4bf9-42ca-b3e1-482c8d7baa4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\Background">
+      <UniqueIdentifier>{9f33ea3a-38df-4079-a957-9425ea7dbf28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -252,6 +255,9 @@
     <ClInclude Include="Src\Application\Object\Stage\Stage.h">
       <Filter>Src\Application\Object\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Background\Background.h">
+      <Filter>Src\Application\Object\Background</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -397,6 +403,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Stage\Stage.cpp">
       <Filter>Src\Application\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Background\Background.cpp">
+      <Filter>Src\Application\Object\Background</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

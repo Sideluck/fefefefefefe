@@ -2,6 +2,7 @@
 #include"../SceneManager.h"
 #include"../../Object/Player/Player.h"
 #include"../../Object/Stage/Stage.h"
+#include"../../Object/Background/Background.h"
 
 void GameScene::Event()
 {
@@ -36,9 +37,9 @@ void GameScene::Init()
 //環境光(アンビエントライト)
 	//KdShaderManager::Instance().WorkAmbientController().SetAmbientLight({ 1,1,1,1 });
 //フォグ(霧)
-	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(true, false);
+	//KdShaderManager::Instance().WorkAmbientController().SetFogEnable(true, false);
 	////距離フォグ														霧の色     密度
-	KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 0.3,0.3,0.3 }, 0.1f);
+	//KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 0.3,0.3,0.3 }, 0.1f);
 	////高さフォグ														霧の色     上 下 カメラとの距離
 	//KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 1,1,1 }, 0, -2, 0);
 
@@ -54,4 +55,9 @@ void GameScene::Init()
 	std::shared_ptr<Stage> stage;
 	stage = std::make_shared<Stage>();
 	m_objList.push_back(stage);
+//背景
+	std::shared_ptr<Background> background;
+	background = std::make_shared<Background>();
+	m_objList.push_back(background);
+
 }
