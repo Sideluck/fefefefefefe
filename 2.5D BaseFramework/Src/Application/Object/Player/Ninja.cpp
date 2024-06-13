@@ -10,13 +10,13 @@ void Ninja::Update()
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
 		m_pos.x -= 0.15f;
-		m_scale.x = -1.0f;
+		m_scale.x = -2.0f;
 		m_dirType |= DirType::Move;
 	}
 	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
 		m_pos.x += 0.15f;
-		m_scale.x = 1.0f;
+		m_scale.x = 2.0f;
 		m_dirType |= DirType::Move;
 	}
 	else
@@ -44,10 +44,10 @@ void Ninja::Update()
 	{
 		m_dirType |= DirType::Jump;
 	}
-	if (m_wallKickCount == 1)
+	/*if (m_wallKickCount == 1)
 	{
 		m_dirType |= DirType::Attack;
-	}
+	}*/
 	if (m_wallMountedFlg && m_jumpFlg)
 	{
 		m_dirType |= DirType::WallMounted;
@@ -108,7 +108,7 @@ void Ninja::PostUpdate()
 	ray.m_dir = Math::Vector3::Down;//真下
 
 	//少し高いところから飛ばす
-	ray.m_pos.y += 0.2f;
+	ray.m_pos.y += 0.3f;
 
 	//段差の許容範囲を設定
 	float enableStepHigh = 0.2f;
@@ -151,7 +151,7 @@ void Ninja::PostUpdate()
 	if (ishit)
 	{
 		//当たっている
-		m_pos = hitPos + Math::Vector3(0, -0.2f, 0);
+		m_pos = hitPos + Math::Vector3(0, -0.4f, 0);
 		m_gravity = 0;
 		m_jumpCount = 0;
 		m_wallKickCount = 0;
@@ -174,9 +174,9 @@ void Ninja::PostUpdate()
 	//球判定用の変数を作成
 	KdCollider::SphereInfo sphere;
 	//球の中心位置を設定
-	sphere.m_sphere.Center = m_pos + Math::Vector3(0, 0.4f, 0);
+	sphere.m_sphere.Center = m_pos + Math::Vector3(0, 0.9f, 0);
 	//球の半径を設定
-	sphere.m_sphere.Radius = 0.2f;
+	sphere.m_sphere.Radius = 0.35f;
 	//当たり判定をしたいタイプを設定
 	sphere.m_type = KdCollider::TypeGround;
 	//デバッグ用
@@ -217,25 +217,32 @@ void Ninja::PostUpdate()
 		//押し戻し
 		m_pos += hitDir * maxOverLap;
 
-		//壁キック
+		//壁張り付き
 		if (m_jumpFlg && !m_keyFlg && m_wallKickCount < m_maxWallKickCount)
 		{
-			m_gravity = 0.00f;
-			if (GetAsyncKeyState(VK_UP) & 0x8000)
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000)
 			{
-				m_pos.y += 0.01f;
-				m_wallMountedFlg = true;
-			}
-			else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-			{
-				m_pos.y -= 0.01f;
-				m_wallMountedFlg = true;
-			}
+				m_gravity = 0.00f;
+				if (GetAsyncKeyState(VK_UP) & 0x8000)
+				{
+					m_pos.y += 0.02f;
+					m_wallMountedFlg = true;
+				}
+				else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+				{
+					m_pos.y -= 0.02f;
+					m_wallMountedFlg = true;
+				}
+				else
+				{
+					m_wallMountedFlg = false;
+				}
 
-			if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-			{
-				m_jumpCount = 1;
-				m_wallKickCount++;
+				if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+				{
+					m_jumpCount = 1;
+					m_wallKickCount++;
+				}
 			}
 		}
 		else
@@ -246,6 +253,7 @@ void Ninja::PostUpdate()
 	else
 	{
 		m_wallMountedFlg = false;
+	
 	}
 }
 	
@@ -253,8 +261,8 @@ void Ninja::PostUpdate()
 void Ninja::Init()
 {
 	m_polygon.SetMaterial("Asset/Textures/Ninja.png");
-	m_pos = { -43,0,-10 };
-	m_scale = { 1,1,1 };
+	m_pos = { -43,-1.5,-27 };
+	m_scale = { 2,2,2 };
 
 	//画像分割
 	m_polygon.SetSplit(8, 4);

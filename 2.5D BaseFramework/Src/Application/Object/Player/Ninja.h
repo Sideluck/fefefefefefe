@@ -58,6 +58,7 @@ private:
 
 	//壁に張り付いているかのフラグ
 	bool m_wallMountedFlg = false;
+	bool m_wallMountedMoveFlg = false;
 
 	//重力
 	float m_gravity = 0;
