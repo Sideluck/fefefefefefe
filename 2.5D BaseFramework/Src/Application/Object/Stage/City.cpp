@@ -4,7 +4,7 @@ void City::Init()
 {
 	//データ読みこみ
 	m_model = std::make_shared<KdModelData>();
-	m_model->Load("Asset/Models/city/city.gltf");
+	m_model->Load("Asset/Models/yard/yard.gltf");
 
 	m_transMat = Math::Matrix::CreateTranslation(0, -2.0f, -5);
 	m_rotMat   = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(90));
