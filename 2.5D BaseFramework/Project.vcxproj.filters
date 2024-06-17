@@ -252,7 +252,7 @@
     <ClInclude Include="Src\Application\Object\Player\Ninja.h">
       <Filter>Src\Application\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Stage\City.h">
+    <ClInclude Include="Src\Application\Object\Stage\Yard.h">
       <Filter>Src\Application\Object\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Object\Background\Sky.h">
@@ -401,7 +401,7 @@
     <ClCompile Include="Src\Application\Object\Player\Ninja.cpp">
       <Filter>Src\Application\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Stage\City.cpp">
+    <ClCompile Include="Src\Application\Object\Stage\Yard.cpp">
       <Filter>Src\Application\Object\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Background\Sky.cpp">

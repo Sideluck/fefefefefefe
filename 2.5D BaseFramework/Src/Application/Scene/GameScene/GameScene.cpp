@@ -1,7 +1,7 @@
 ﻿#include "GameScene.h"
 #include"../SceneManager.h"
 #include"../../Object/Player/Ninja.h"
-#include"../../Object/Stage/City.h"
+#include"../../Object/Stage/Yard.h"
 #include"../../Object/Background/Sky.h"
 
 void GameScene::Event()
@@ -20,7 +20,7 @@ void GameScene::Event()
 	}
 
 	Math::Matrix transMat;
-	Math::Vector3 cameraPos = {1.5f,1.5f,-7.0f };
+	Math::Vector3 cameraPos = {1.5f,1.5f,-5.5f };
 	transMat = Math::Matrix::CreateTranslation(cameraPos + playerPos);
 	m_camera->SetCameraMatrix(transMat);
 
@@ -33,7 +33,7 @@ void GameScene::Init()
 //カメラ
 	m_camera = std::make_unique<KdCamera>();
 //平行光(ディレクショナルライト)								      方向      色
-	KdShaderManager::Instance().WorkAmbientController().SetDirLight({ 0,-1,-1 }, { 3,3,3 });
+	//KdShaderManager::Instance().WorkAmbientController().SetDirLight({ 0,-5,-1 }, { 3,3,3 });
 //環境光(アンビエントライト)
 	//KdShaderManager::Instance().WorkAmbientController().SetAmbientLight({ 1,1,1,1 });
 //フォグ(霧)
@@ -51,12 +51,11 @@ void GameScene::Init()
 	m_objList.push_back(ninja);
 	m_player = ninja;
 //ステージ
-	std::shared_ptr<City> city;
-	city = std::make_shared<City>();
-	m_objList.push_back(city);
+	std::shared_ptr<Yard> yard;
+	yard = std::make_shared<Yard>();
+	m_objList.push_back(yard);
 //背景
 	std::shared_ptr<Sky> sky;
 	sky = std::make_shared<Sky>();
 	m_objList.push_back(sky);
-
 }

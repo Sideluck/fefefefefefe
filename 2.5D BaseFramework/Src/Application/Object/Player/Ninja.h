@@ -3,20 +3,20 @@ class Ninja :public KdGameObject
 {
 public:
 
-	enum DirType
+	enum Currentstate
 	{
 		Idle		= 1 << 0,	//立ち姿
 		Move		= 1 << 1,	//移動
 		Jump		= 1 << 2,	//ジャンプ
 		Attack		= 1 << 3,	//攻撃
 		WallMounted = 1 << 4,	//壁張り付き
+		Death       = 1 << 5,	//やられた
 	};
 
 	struct AnimationInfo
 	{
 		int start;			//開始コマ
 		int end;			//終了コマ
-		int nextStart;		//ループ後の開始コマ
 		float count;		//現在のコマ数カウント
 		float speed;		//アニメーションの速度
 	};
@@ -29,8 +29,12 @@ public:
 	void Init()override;
 	void GenerateDepthMapFromLight()override;
 	void DrawLit()override;
+	void DrawSprite()override;
+
 
 private:
+
+	std::shared_ptr<KdTexture> m_MakimonoTex;
 
 	Math::Matrix m_scaleMat;
 	Math::Matrix m_rotMat;
@@ -46,7 +50,7 @@ private:
 	void ChangeAnimetion();
 
 	//キャラが向いている方向種類 ビット管理
-	UINT m_dirType;
+	UINT m_currentState;
 
 	AnimationInfo m_animeInfo;
 
@@ -80,4 +84,8 @@ private:
 
 	//壁ジャンプの最大数
 	const int m_maxWallKickCount = 1; 
+
+	//体力
+	int m_hp = 0;
+
 };

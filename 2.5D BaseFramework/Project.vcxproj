@@ -159,7 +159,7 @@
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Object\Background\Sky.h" />
     <ClInclude Include="Src\Application\Object\Player\Ninja.h" />
-    <ClInclude Include="Src\Application\Object\Stage\City.h" />
+    <ClInclude Include="Src\Application\Object\Stage\Yard.h" />
     <ClInclude Include="Src\Application\Scene\BaseScene\BaseScene.h" />
     <ClInclude Include="Src\Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Src\Application\Scene\SceneManager.h" />
@@ -212,7 +212,7 @@
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Object\Background\Sky.cpp" />
     <ClCompile Include="Src\Application\Object\Player\Ninja.cpp" />
-    <ClCompile Include="Src\Application\Object\Stage\City.cpp" />
+    <ClCompile Include="Src\Application\Object\Stage\Yard.cpp" />
     <ClCompile Include="Src\Application\Scene\BaseScene\BaseScene.cpp" />
     <ClCompile Include="Src\Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Src\Application\Scene\SceneManager.cpp" />
