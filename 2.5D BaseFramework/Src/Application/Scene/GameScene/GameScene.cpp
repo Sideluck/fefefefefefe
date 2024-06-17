@@ -1,8 +1,8 @@
 ﻿#include "GameScene.h"
 #include"../SceneManager.h"
-#include"../../Object/Player/Ninja.h"
-#include"../../Object/Stage/Yard.h"
-#include"../../Object/Background/Sky.h"
+#include"../../Object/Player/Ninja/Ninja.h"
+#include"../../Object/Stage/Yard/Yard.h"
+#include"../../Object/Background/Sky/Sky.h"
 
 void GameScene::Event()
 {

@@ -82,6 +82,15 @@
     <Filter Include="Src\Application\Object\Background">
       <UniqueIdentifier>{9f33ea3a-38df-4079-a957-9425ea7dbf28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\Background\Sky">
+      <UniqueIdentifier>{5794d199-3982-4f34-a35e-4d3a9eb47b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Player\Ninja">
+      <UniqueIdentifier>{5ef598ec-75dc-4a94-9662-19115c282526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Stage\Yard">
+      <UniqueIdentifier>{7fc442a0-9ad8-48b3-b9c6-63bb15558125}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -249,14 +258,14 @@
     <ClInclude Include="..\Library\imgui\ja_glyph_ranges.h">
       <Filter>Library\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Player\Ninja.h">
-      <Filter>Src\Application\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Object\Stage\Yard.h">
-      <Filter>Src\Application\Object\Stage</Filter>
+      <Filter>Src\Application\Object\Stage\Yard</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Player\Ninja.h">
+      <Filter>Src\Application\Object\Player\Ninja</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\Object\Background\Sky.h">
-      <Filter>Src\Application\Object\Background</Filter>
+      <Filter>Src\Application\Object\Background\Sky</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -398,14 +407,14 @@
     <ClCompile Include="..\Library\imgui\imgui_stdlib.cpp">
       <Filter>Library\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Player\Ninja.cpp">
-      <Filter>Src\Application\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Object\Stage\Yard.cpp">
-      <Filter>Src\Application\Object\Stage</Filter>
+      <Filter>Src\Application\Object\Stage\Yard</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Player\Ninja.cpp">
+      <Filter>Src\Application\Object\Player\Ninja</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Background\Sky.cpp">
-      <Filter>Src\Application\Object\Background</Filter>
+      <Filter>Src\Application\Object\Background\Sky</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

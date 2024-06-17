@@ -1,4 +1,4 @@
-﻿#include "Sky/Sky.h"
+﻿#include "Sky.h"
 
 void Sky::Init()
 {

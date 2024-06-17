@@ -1,4 +1,4 @@
-﻿#include "Ninja/Ninja.h"
+﻿#include "Ninja.h"
 #include "../../Scene/SceneManager.h"
 
 void Ninja::Update()

@@ -1,4 +1,4 @@
-﻿#include "Yard/Yard.h"
+﻿#include "Yard.h"
 
 void Yard::Init()
 {
